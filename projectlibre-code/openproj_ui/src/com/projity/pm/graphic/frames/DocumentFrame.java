@@ -74,6 +74,7 @@ import com.projity.dialog.BaselineDialog;
 import com.projity.dialog.DelegateTaskDialog;
 import com.projity.dialog.FindDialog;
 import com.projity.dialog.OptimizeProjectDialogBox;
+import com.projity.dialog.OptimizeProjectDialogBox.Form;
 import com.projity.dialog.UpdateProjectDialogBox;
 import com.projity.dialog.UpdateTaskDialog;
 import com.projity.dialog.calendar.ChangeWorkingTimeDialogBox;
@@ -135,6 +136,8 @@ import com.projity.util.DataUtils;
 import com.projity.util.Environment;
 import com.projity.workspace.SavableToWorkspace;
 import com.projity.workspace.WorkspaceSetting;
+
+import sun.tools.jar.Main;
 
 /**
  *
@@ -408,10 +411,10 @@ public class DocumentFrame extends NamedFrame implements
 	void doOptimizeProjectDialog() {
 		finishAnyOperations();
 		OptimizeProjectDialogBox dlg = OptimizeProjectDialogBox.getInstance(
-				getGraphicManager().getFrame());
+				getGraphicManager().getFrame(), project.getDocumentFolderUrl());
 		dlg.setLocationRelativeTo(null);//to center on screen
 		dlg.doModal();
-
+		//
 	}
 
 	void doDefineCodeDialog() {

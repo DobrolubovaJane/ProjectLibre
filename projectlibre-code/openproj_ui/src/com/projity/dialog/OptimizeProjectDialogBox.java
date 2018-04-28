@@ -6,12 +6,16 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -19,11 +23,15 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.projity.datatype.Hyperlink;
 import com.projity.dialog.UpdateProjectDialogBox.Form;
 import com.projity.dialog.util.ComponentFactory;
 import com.projity.dialog.util.ExtDateField;
 import com.projity.options.CalendarOption;
+import com.projity.pm.task.Project;
 import com.projity.strings.Messages;
+
+import sun.tools.jar.Main;
 
 /**
  *
@@ -31,32 +39,33 @@ import com.projity.strings.Messages;
 public class OptimizeProjectDialogBox extends AbstractDialog {
 	private static final long serialVersionUID = 1L;
 	public static class Form {
-		Integer time;
+		String time;
 	
-		void setTime(Integer time) {
+		void setTime(String time) {
 			this.time = time;
 			
 		}
 		
-		Integer getTime() {
+		String getTime() {
 			return this.time;
 		}
 		
     }	
     
     private Form form;
-    JLabel label = new JLabel("Enter new directive time:");
-    JTextField directiveTime = new JTextField("", 5);
-    JFrame window = new JFrame("Optimize Project");
+    JLabel label = new JLabel("Enter new directive time in hours:");
+    JTextField directiveTime = new JTextField("", 3);
+    Hyperlink projectUrl;
 	
 
         
-	public static OptimizeProjectDialogBox getInstance(Frame owner) {
-		return new OptimizeProjectDialogBox(owner);
+	public static OptimizeProjectDialogBox getInstance(Frame owner, Hyperlink projectUrl) {
+		return new OptimizeProjectDialogBox(owner, projectUrl);
 	}
 
-	private OptimizeProjectDialogBox(Frame owner) {
-		super(owner, Messages.getString("Optimize Project"), true); //$NON-NLS-1$
+	private OptimizeProjectDialogBox(Frame owner, Hyperlink projectUrl) {
+		super(owner, "Optimize Project", true); //$NON-NLS-1$
+		this.projectUrl = projectUrl;
 		addDocHelp("Optimize_Project");
 		
 			this.form = new Form();
@@ -65,31 +74,53 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 	protected void initControls() {
 
 		directiveTime.setBackground(Color.WHITE);
-		directiveTime.setColumns(5);
+		directiveTime.setSize(10, 5);
+	}
+	
+	@Override
+	public void onOk() {
+		bind(true);
+		String[] arg = {form.getTime()};
+		Main.main(arg);
+		super.onOk();
+	}
+	
+	protected boolean bind(boolean get) {
+		if (form == null)
+			return false;
+		if (get) {
+			form.setTime(directiveTime.getText()); //$NON-NLS-1$
+		} 
+		return true;
 	}
 	
 	
 
 	public JComponent createContentPanel() {
-	
-		
-		FormLayout layout = new FormLayout(
-		        "20dlu,3dlu,p, 3dlu,75dlu,3dlu,30dlu ", //$NON-NLS-1$
-	    		  "p,1dlu,p,1dlu,p,10dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p"); //$NON-NLS-1$
+
+		FormLayout layout = new FormLayout("200dlu:grow",
+				"p,3dlu,p,2dlu");
 
 		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+		 
+		builder.setDefaultDialogBorder();
+		builder.nextLine(2);
+		
 		JPanel panel = new JPanel();
 		panel.add(label);
 		panel.add(directiveTime);
-
-		builder.add(panel);
 		
-		window.getContentPane().add(panel);
+		directiveTime.addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent e){
+                char ch = e.getKeyChar();
+                if(!(Character.isDigit(ch) || ch =='.')) {
+                    JOptionPane.showMessageDialog(null, "Only numbers are allowed!");
+                    directiveTime.setText(" ");
+                }
+            }
+		});	
 		
-		window.pack();
-		
-		window.setLocationRelativeTo(null);
-		window.setVisible(true);
+		builder.add(panel);		
 		return builder.getPanel();
 	}
 	
@@ -100,4 +131,6 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 	public Object getBean(){
 		return form;
 	}
+
+
 }

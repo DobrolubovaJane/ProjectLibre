@@ -1,12 +1,15 @@
-package genetic;
-
-import functions.FunctionWithRate;
-import objects.*;
+package com.projity.genetic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import com.projity.functions.FunctionWithRate;
+import com.projity.objects.Executor;
+import com.projity.objects.ExecutorConditions;
+import com.projity.objects.Project;
+import com.projity.objects.Work;
 
 public class OvertimePlanHromosome {
     private HashMap<Work, Double> cashPlan = new HashMap<>();

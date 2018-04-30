@@ -1,13 +1,12 @@
-package genetic;
+package com.projity.genetic;
 
-import functions.FunctionWithRate;
-import objects.Executor;
-import objects.Work;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.projity.objects.Work;
 
 public class HromosomeUtils {
     private static HromosomeUtils instance;

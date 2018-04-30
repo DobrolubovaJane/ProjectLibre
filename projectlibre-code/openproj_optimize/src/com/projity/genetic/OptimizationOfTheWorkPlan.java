@@ -1,14 +1,14 @@
-package genetic;
-
-import functions.FunctionWithRate;
-import objects.Executor;
-import objects.Project;
-import objects.Work;
+package com.projity.genetic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import com.projity.functions.FunctionWithRate;
+import com.projity.objects.Executor;
+import com.projity.objects.Project;
+import com.projity.objects.Work;
 
 public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     private int N;

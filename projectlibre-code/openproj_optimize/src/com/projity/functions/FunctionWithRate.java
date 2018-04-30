@@ -1,4 +1,4 @@
-package functions;
+package com.projity.functions;
 
 public class FunctionWithRate implements IFunction {
     @Override

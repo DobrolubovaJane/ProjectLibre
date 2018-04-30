@@ -1,11 +1,12 @@
-package xml;
+package com.projity.xml;
 
+import com.projity.genetic.OvertimePlanHromosome;
+import com.projity.objects.Executor;
+import com.projity.objects.ExecutorConditions;
+import com.projity.objects.Project;
+import com.projity.objects.Work;
 import com.sun.org.apache.xerces.internal.dom.ChildNode;
-import genetic.OvertimePlanHromosome;
-import objects.Executor;
-import objects.ExecutorConditions;
-import objects.Project;
-import objects.Work;
+
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

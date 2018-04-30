@@ -6,6 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/openproj_reports"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/openproj_exchange"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/openproj_contrib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openproj_optimize"/>
 	<classpathentry kind="lib" path="/openproj_contrib/lib/itext.jar"/>
 	<classpathentry kind="lib" path="/openproj_contrib/lib/trident-6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>

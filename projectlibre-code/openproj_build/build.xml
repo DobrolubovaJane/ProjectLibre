@@ -49,6 +49,8 @@
 						<src path="${src_pl_core}" />
 						<src path="${src_core}" />
 						<src path="${src_ui}" />
+						<src path="${src_pl_optimize}" />
+						<src path="${src_optimize}" />
 						<src path="${src_reports}" />
 						<src path="${src_pl_exchange}" />
 						<src path="${src_exchange}" />
@@ -68,6 +70,8 @@
 						<src path="${src_pl_core}" />
 						<src path="${src_core}" />
 						<src path="${src_ui}" />
+						<src path="${src_pl_optimize}" />
+						<src path="${src_optimize}" />
 						<src path="${src_reports}" />
 						<src path="${src_pl_exchange}" />
 						<src path="${src_exchange}" />
@@ -92,6 +96,14 @@
 				<exclude name="**/*.java" />
 			</fileset>
 			<fileset dir="${src_ui}/">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${src_pl_optimize}/">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${src_optimize}/">
 				<include name="**/*" />
 				<exclude name="**/*.java" />
 			</fileset>

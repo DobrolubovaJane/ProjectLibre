@@ -1,4 +1,4 @@
-package objects;
+package com.projity.objects;
 
 import java.math.BigInteger;
 import java.util.HashMap;

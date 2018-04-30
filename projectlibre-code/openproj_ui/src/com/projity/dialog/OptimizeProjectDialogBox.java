@@ -80,8 +80,8 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 	@Override
 	public void onOk() {
 		bind(true);
-		String[] arg = {form.getTime()};
-		Main.main(arg);
+		String[] args = {form.getTime()};
+		MainOptimize.execute(args);
 		super.onOk();
 	}
 	

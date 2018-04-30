@@ -1,4 +1,4 @@
-package xml;
+package com.projity.xml;
 
 public class TimeUtils {
     private TimeUtils(){}

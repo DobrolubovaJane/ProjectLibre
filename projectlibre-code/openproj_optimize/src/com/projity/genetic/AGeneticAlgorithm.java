@@ -1,8 +1,8 @@
-package genetic;
-
-import objects.Project;
+package com.projity.genetic;
 
 import java.util.List;
+
+import com.projity.objects.Project;
 
 public abstract class AGeneticAlgorithm {
     public abstract List<OvertimePlanHromosome> generateHromosomes(Project project);

@@ -1,25 +1,26 @@
-package src.com.projity;
+package com.projity;
 
-import functions.FunctionWithRate;
-import genetic.OptimizationOfTheWorkPlan;
-import genetic.OvertimePlanHromosome;
-import objects.Project;
 import org.xml.sax.SAXException;
-import xml.XMLUtils;
+
+import com.projity.functions.FunctionWithRate;
+import com.projity.genetic.OptimizationOfTheWorkPlan;
+import com.projity.genetic.OvertimePlanHromosome;
+import com.projity.objects.Project;
+import com.projity.xml.XMLUtils;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.*;
 
-public class Main {
-	private Main() {}
+public class MainOptimize {
+	private MainOptimize() {}
 	
     public static void HromosomeisGenerate() {
 
     }
 
-    public static void main(String[] args) {
+    public static void execute(String[] args) {
         int step = 1;
         int countOfHromosome = 10;
         String input = "src/com/projity/xml/Little Project.xml";

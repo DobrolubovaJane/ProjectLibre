@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.projity.MainOptimize;
 import com.projity.datatype.Hyperlink;
 import com.projity.dialog.UpdateProjectDialogBox.Form;
 import com.projity.dialog.util.ComponentFactory;

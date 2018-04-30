@@ -35,6 +35,7 @@ public class XMLUtils {
 
     public static Project init(String input, Double newTime, Double maxCash) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        System.out.println(input);
         document = documentBuilder.parse(input);
 
         initWorks();
@@ -236,7 +237,7 @@ public class XMLUtils {
              works.appendChild(eWork);
          }
 
-         File file = new File("source/src/xml/result.xml");
+         File file = new File("src/com/projity/xml/result.xml");
 
          TransformerFactory transformerFactory = TransformerFactory.newInstance();
          transformerFactory.setAttribute("indent-number", 10);

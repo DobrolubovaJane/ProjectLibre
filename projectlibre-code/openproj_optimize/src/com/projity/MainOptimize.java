@@ -23,7 +23,7 @@ public class MainOptimize {
     public static void execute(String[] args) {
         int step = 1;
         int countOfHromosome = 10;
-        String input = "src/com/projity/xml/Little Project.xml";
+        String input = "src/com/projity/xml/Little_Project.xml";
         Double newTime = Double.valueOf(args[0]);
         Double maxCash = 9.0;
 
@@ -40,6 +40,7 @@ public class MainOptimize {
 
         if (project == null) {
             System.out.println("Project is empty!");
+            return;
         }
 
         FunctionWithRate function = new FunctionWithRate();

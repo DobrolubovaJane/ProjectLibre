@@ -1,38 +1,20 @@
 package com.projity.dialog;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Date;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.projity.MainOptimize;
 import com.projity.datatype.Hyperlink;
-import com.projity.dialog.UpdateProjectDialogBox.Form;
-import com.projity.dialog.util.ComponentFactory;
-import com.projity.dialog.util.ExtDateField;
-import com.projity.options.CalendarOption;
-import com.projity.pm.task.Project;
-import com.projity.strings.Messages;
-
-import sun.tools.jar.Main;
 
 /**
  *
@@ -41,6 +23,7 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 	private static final long serialVersionUID = 1L;
 	public static class Form {
 		String time;
+		String cash;
 	
 		void setTime(String time) {
 			this.time = time;
@@ -51,11 +34,22 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 			return this.time;
 		}
 		
+		void setCash(String cash) {
+			this.cash = cash;
+			
+		}
+		
+		String getCash() {
+			return this.cash;
+		}
+		
     }	
     
     private Form form;
     JLabel label = new JLabel("Enter new directive time in hours:");
+    JLabel label2 = new JLabel("Enter max cash for project:");
     JTextField directiveTime = new JTextField("", 3);
+    JTextField maxCash = new JTextField("", 3);
     Hyperlink projectUrl;
 	
 
@@ -80,17 +74,23 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 	
 	@Override
 	public void onOk() {
+		System.out.println("Time "+ directiveTime.getText() + "   Cash "+maxCash.getText());
+		if (directiveTime.getText().isEmpty() || maxCash.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please fill all fields!");
+		} else {
 		bind(true);
-		String[] args = {form.getTime()};
+		String[] args = {form.getTime(), form.getCash()};
 		MainOptimize.execute(args);
 		super.onOk();
+		}
 	}
 	
 	protected boolean bind(boolean get) {
 		if (form == null)
 			return false;
 		if (get) {
-			form.setTime(directiveTime.getText()); //$NON-NLS-1$
+			form.setTime(directiveTime.getText()); 
+			form.setCash(maxCash.getText()); 
 		} 
 		return true;
 	}
@@ -99,7 +99,7 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 
 	public JComponent createContentPanel() {
 
-		FormLayout layout = new FormLayout("200dlu:grow",
+		FormLayout layout = new FormLayout("300dlu:grow",
 				"p,3dlu,p,2dlu");
 
 		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
@@ -111,6 +111,11 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 		panel.add(label);
 		panel.add(directiveTime);
 		
+		
+		JPanel panel2 = new JPanel();
+		panel.add(label2);
+		panel.add(maxCash);
+		
 		directiveTime.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent e){
                 char ch = e.getKeyChar();
@@ -121,7 +126,19 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
             }
 		});	
 		
-		builder.add(panel);		
+		maxCash.addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent e){
+                char ch = e.getKeyChar();
+                if(!(Character.isDigit(ch) || ch =='.')) {
+                    JOptionPane.showMessageDialog(null, "Only numbers are allowed!");
+                    maxCash.setText(" ");
+                }
+            }
+		});	
+		
+		builder.add(panel);
+		builder.nextLine(1);
+		builder.add(panel2);
 		return builder.getPanel();
 	}
 	

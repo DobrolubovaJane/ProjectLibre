@@ -25,7 +25,7 @@ public class MainOptimize {
         int countOfHromosome = 10;
         String input = "src/com/projity/xml/Little_Project.xml";
         Double newTime = Double.valueOf(args[0]);
-        Double maxCash = 9.0;
+        Double maxCash = Double.valueOf(args[1]);
 
         Project project = null;
         try {

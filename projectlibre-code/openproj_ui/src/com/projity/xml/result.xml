@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project cash="4.131658222440339" new_time="NaN">
+<project cash="103.15876863825335" new_time="NaN">
 <works>
-<work cash="0.0" id="1" name="First" new_time="PT8H0M0S"/>
-<work cash="0.0" id="2" name="Second" new_time="PT4H0M0S"/>
-<work cash="4.131658222440339" id="3" name="Third" new_time="PT10H14M15S"/>
-<work cash="0.0" id="4" name="Fourth" new_time="PT7H0M0S"/>
+<work cash="3.791251323952309" id="1" name="First" new_time="PT3H27M15S"/>
+<work cash="10.986184960179244" id="2" name="Second" new_time="PT2H3M28S"/>
+<work cash="4.19097143813355" id="3" name="Third" new_time="PT4H15M24S"/>
+<work cash="0.0" id="4" name="Fourth" new_time="PT1H0M0S"/>
 <work cash="0.0" id="5" name="START_OPTIMIZATION" new_time="PT0H0M0S"/>
 <work cash="-0.0" id="6" name="END_OPTIMIZATION" new_time="PT0H0M0S"/>
 </works>

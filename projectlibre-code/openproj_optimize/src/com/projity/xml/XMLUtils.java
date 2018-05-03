@@ -5,8 +5,6 @@ import com.projity.objects.Executor;
 import com.projity.objects.ExecutorConditions;
 import com.projity.objects.Project;
 import com.projity.objects.Work;
-import com.sun.org.apache.xerces.internal.dom.ChildNode;
-
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -30,10 +28,12 @@ public class XMLUtils {
     static Map<String, ExecutorConditions> executorConditionsId = new HashMap<>();
     static HashMap<Work, Executor> workAndExecutor = new HashMap<>();
     private static Work startOptimization;
+    
 
     private XMLUtils() {}
 
     public static Project init(String input, Double newTime, Double maxCash) throws ParserConfigurationException, IOException, SAXException {
+    	
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         System.out.println(input);
         document = documentBuilder.parse(input);

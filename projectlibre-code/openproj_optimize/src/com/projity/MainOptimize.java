@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class MainOptimize {
+	 static List <OvertimePlanHromosome> parentList = new ArrayList<>();
+	 static List<OvertimePlanHromosome> childrenList = new ArrayList<>();
+	 static List<OvertimePlanHromosome> listToAdd = new ArrayList<>();
+	 static String input = "src/com/projity/xml/Little_Project.xml";
 	private MainOptimize() {}
 	
     public static void HromosomeisGenerate() {
@@ -23,7 +27,7 @@ public class MainOptimize {
     public static void execute(String[] args) {
         int step = 1;
         int countOfHromosome = 10;
-        String input = "src/com/projity/xml/Little_Project.xml";
+        
         Double newTime = Double.valueOf(args[0]);
         Double maxCash = Double.valueOf(args[1]);
 
@@ -46,11 +50,13 @@ public class MainOptimize {
         FunctionWithRate function = new FunctionWithRate();
 
         OptimizationOfTheWorkPlan optim = new OptimizationOfTheWorkPlan(countOfHromosome, function);
-        List <OvertimePlanHromosome> parentList = optim.generateHromosomes(project);
+       
+        parentList = optim.generateHromosomes(project);
         for (int i = 0; i < step; i++) {
-            List<OvertimePlanHromosome> childrenList = optim.chooseParents(parentList);
+            
+            childrenList = optim.chooseParents(parentList);
 
-            List<OvertimePlanHromosome> listToAdd = new ArrayList<>();
+            
             for (OvertimePlanHromosome h : childrenList) {
                 OvertimePlanHromosome m = optim.mutation(h);
                 listToAdd.add(m);
@@ -62,9 +68,7 @@ public class MainOptimize {
         OvertimePlanHromosome result = optim.result(parentList);
         System.out.println("RESULT " + result.toString());
         try {
-            XMLUtils.getXMLresult(result);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            XMLUtils.updateXML(result, input);
         } catch (TransformerException e) {
             e.printStackTrace();
         }

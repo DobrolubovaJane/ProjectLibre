@@ -216,7 +216,7 @@ public class LocalFileImporter extends FileImporter {
 		File file=new File(fileName);
 		File tmpFile=file;
 		for (int count=0;tmpFile.exists();count++){
-			tmpFileName=name+"_tmp"+count+extension;
+			tmpFileName=name;
 			tmpFile=new File(tmpFileName);
 		}
 		
@@ -277,7 +277,8 @@ public class LocalFileImporter extends FileImporter {
 		}
 
 	}
-
+	
+	
 
 
 	public Job getImportFileJob(){

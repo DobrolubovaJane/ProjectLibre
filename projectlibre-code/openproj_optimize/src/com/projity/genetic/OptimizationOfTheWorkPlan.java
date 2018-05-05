@@ -23,8 +23,8 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     @Override
     public List<OvertimePlanHromosome> generateHromosomes(Project project) {
         List<OvertimePlanHromosome> list = new ArrayList<>();
-
-        for (int i = 0; i < N; i++) {
+list.clear();
+		for (int i = 0; i < N; i++) {
             OvertimePlanHromosome h = new OvertimePlanHromosome(project);
             h.generateHromosome(function, random);
             list.add(h);
@@ -55,12 +55,14 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     @Override
     public List<OvertimePlanHromosome> selection(List<OvertimePlanHromosome> listOfParents, List<OvertimePlanHromosome> listOfChildren) {
         HromosomeUtils.getInstance();
-        OvertimePlanHromosome worstParent = listOfParents.get(0);
+        OvertimePlanHromosome worstParent = null;
+        worstParent = listOfParents.get(0);
         for (OvertimePlanHromosome parent : listOfParents) {
             worstParent = HromosomeUtils.getWorst(worstParent, parent);
         }
 
-        OvertimePlanHromosome bestChild = listOfChildren.get(0);
+        OvertimePlanHromosome bestChild = null;
+        bestChild = listOfChildren.get(0);
         for (OvertimePlanHromosome child : listOfChildren) {
             bestChild = HromosomeUtils.getBest(bestChild, child);
         }
@@ -73,7 +75,8 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     @Override
     public OvertimePlanHromosome result(List<OvertimePlanHromosome> list) {
         HromosomeUtils.getInstance();
-        OvertimePlanHromosome bestChild = list.get(0);
+        OvertimePlanHromosome bestChild = null;
+        bestChild = list.get(0);
         for (OvertimePlanHromosome child : list) {
             bestChild = HromosomeUtils.getBest(bestChild, child);
         }
@@ -83,7 +86,7 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
             Executor executor = project.getExecutorOfWork(work);
             double oldTime = executor.getTimeOfWork(work);
             double newTime = (double) pair.getValue();
-            if (oldTime == newTime) {
+            if (oldTime <= newTime) {
                 bestChild.editCashPlan(work, 0.0);
             }
 

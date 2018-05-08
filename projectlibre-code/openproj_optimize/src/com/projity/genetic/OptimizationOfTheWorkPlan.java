@@ -84,6 +84,7 @@ list.clear();
             Project project = bestChild.getProject();
             Work work = (Work) pair.getKey();
             Executor executor = project.getExecutorOfWork(work);
+            System.out.println("work " + work);
             double oldTime = executor.getTimeOfWork(work);
             double newTime = (double) pair.getValue();
             if (oldTime <= newTime) {

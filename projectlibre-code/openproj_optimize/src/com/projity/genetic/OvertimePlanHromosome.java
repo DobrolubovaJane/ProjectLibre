@@ -24,39 +24,27 @@ public class OvertimePlanHromosome {
     public OvertimePlanHromosome generateHromosome(FunctionWithRate function, Random rnd) {
 
         for (Work work : project.getListOfWorks()) {
-        	//System.out.println("SIZE "+ project.getListOfWorks().size());
-//        	if (work.getName().equals("START_OPTIMIZATION") || work.getName().equals("END_OPTIMIZATION")) {
-//        		continue;
-//        	}
             Executor executor = project.getExecutorOfWork(work);
             ExecutorConditions executorConditions = executor.getExecutorConditions();
             double random = rnd.nextDouble();
             double cash = 0.0;
             double time = 0.0;
-            //System.out.println("[OvertimePlanHromosome] work "+ work.getName());
             if (executorConditions == null) {
                 cash = random * executor.getRate() * 4;
                 time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
             } else {
                 Double condition = executorConditions.getConditionOfWork(work);
-                //System.out.println("condition "+ condition);
                 if (condition == null) {
-                  //  System.out.println("executor.getRate() " +executor.getRate());
                     cash = random * executor.getRate() * 4;
                     time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
                     //System.out.println("cash " + cash+ " time " +time);
                 } else {
                     if (condition == 0) {
-                      //  System.out.println("condition == 0");
                         time = executor.getTimeOfWork(work);
-                        //System.out.println("cash " + cash+ " time " +time);
                     } else if (condition > 0) {
-                        //System.out.println("condition > 0");
-                        double maxCash = function.solveMaxCash(executor.getTimeOfWork(work)-condition, executor.getRate(), executor.getTimeOfWork(work));
-                        //System.out.println("maxCash " +maxCash);
+                        double maxCash = function.solveMaxCash(executor.getTimeOfWork(work)-4, executor.getRate(), executor.getTimeOfWork(work));
                         cash = random * maxCash;
                         time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
-                        //System.out.println("cash " + cash+ " time " +time);
                     }
                 }
             }

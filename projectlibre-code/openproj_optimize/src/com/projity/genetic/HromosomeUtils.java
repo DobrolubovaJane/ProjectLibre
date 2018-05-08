@@ -52,9 +52,9 @@ public class HromosomeUtils {
             secondCash += (double) secondCashPlan.get(work);
         }
 
-        if (firstTime < secondTime  && secondTime > newTime) {
+        if (firstTime < secondTime  && secondTime < newTime) {
             return first;
-        } else if (firstTime > secondTime && firstTime > newTime) {
+        } else if (firstTime > secondTime && firstTime < newTime) {
             return second;
         } else if (firstCash < secondCash) {
             return first;
@@ -94,9 +94,19 @@ public class HromosomeUtils {
             secondCash += secondCashPlan.get(work);
         }
 
-        if (firstTime < secondTime && secondTime > newTime) {
+        if (firstTime < secondTime) {
+        	if (secondTime < newTime) {
+        		if (firstCash < secondCash) {
+                    return second;
+                } else return first;
+        	}
             return second;
-        } else if (firstTime > secondTime && firstTime > newTime) {
+        } else if (firstTime > secondTime) {
+        	if (firstTime < newTime) {
+        		if (firstCash < secondCash) {
+                    return second;
+                } else return first;
+        	}
             return first;
         } else if (firstCash < secondCash) {
             return second;

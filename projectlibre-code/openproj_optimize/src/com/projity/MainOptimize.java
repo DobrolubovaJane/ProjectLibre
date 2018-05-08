@@ -17,7 +17,7 @@ public class MainOptimize {
 	 static List <OvertimePlanHromosome> parentList = new ArrayList<>();
 	 static List<OvertimePlanHromosome> childrenList = new ArrayList<>();
 	 static List<OvertimePlanHromosome> listToAdd = new ArrayList<>();
-	 static String input = "src/com/projity/xml/Little_Project.xml";
+	 static String input = "src/com/projity/xml/Little_Project_1.xml";
 	private MainOptimize() {}
 	
     public static void HromosomeisGenerate() {
@@ -25,7 +25,7 @@ public class MainOptimize {
     }
 
     public static void execute(String[] args) {
-        int step = 1;
+        int step = 200;
         int countOfHromosome = 10;
         
         Double newTime = Double.valueOf(args[0]);

@@ -22,7 +22,8 @@ public class OvertimePlanHromosome {
     }
 
     public OvertimePlanHromosome generateHromosome(FunctionWithRate function, Random rnd) {
-
+    	double allTime = project.getNewTime();
+    	double allCash = project.getMaxCash();
         for (Work work : project.getListOfWorks()) {
             Executor executor = project.getExecutorOfWork(work);
             ExecutorConditions executorConditions = executor.getExecutorConditions();
@@ -37,24 +38,32 @@ public class OvertimePlanHromosome {
                 if (condition == null) {
                     cash = random * executor.getRate() * 4;
                     time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
-                    //System.out.println("cash " + cash+ " time " +time);
                 } else {
                     if (condition == 0) {
                         time = executor.getTimeOfWork(work);
                     } else if (condition > 0) {
-                        double maxCash = function.solveMaxCash(executor.getTimeOfWork(work)-4, executor.getRate(), executor.getTimeOfWork(work));
-                        cash = random * maxCash;
+                        double maxCash = function.solveMaxCash(executor.getRate(), executor.getTimeOfWork(work));
+                    	cash = random * maxCash;
                         time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
                     }
                 }
             }
+            
 
             cashPlan.put(work, cash);
             timePlan.put(work, time);
-
+            double oldTime = executor.getTimeOfWork(work);
+            if (oldTime <= time) {
+                editCashPlan(work, 0.0);
+            }
         }
-        //System.out.println("SIZE " + cashPlan.size() + " cashPlan " + cashPlan+ " timePlan " +timePlan);
+        
         setCriticalPath();
+        System.out.println("GENERATE cashPlan" + this.getAllCash() + "  timePlan "+ this.getAllTime());
+        if (this.getAllTime() > this.getProject().getNewTime() || this.getAllCash() > this.getProject().getMaxCash()) {
+        	
+        	System.setErr(null);
+        }
         return this;
     }
     public Project getProject() {
@@ -71,6 +80,20 @@ public class OvertimePlanHromosome {
         return timePlan;
     }
 
+    public double getCashOfWork(Work work) {
+    	return cashPlan.get(work);
+    }
+    
+    public double getTimeOfWork(Work work) {
+    	return timePlan.get(work);
+    }
+        
+    public void updateTimeOfWork(Work work, double cash, FunctionWithRate function) {
+    	Executor executor = project.getExecutorOfWork(work);
+    	double time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
+        timePlan.put(work, time);
+    }
+    
     public List<Work> getCriticalPath() {
         return criticalPath;
     }
@@ -101,36 +124,45 @@ public class OvertimePlanHromosome {
             return;
         }
     }
-
-    public String toString() {
-        String str = "\n TIME ";
-        double allTime = 0.0;
-        for (HashMap.Entry pair : this.getTimePlan().entrySet()) {
-            Work work = (Work) pair.getKey();
-            String name = work.getName();
-            double time = (double) pair.getValue();
-            str += name + " = " + time + ", ";
+    
+    public double getAllCash() {
+    	double allCash  = 0.0;
+        
+        for (Work work : cashPlan.keySet()) {
+            double cash = cashPlan.get(work);
+            allCash += cash;
         }
+        return allCash;
+    }
+    
+    public double getAllTime() {
+    	double allTime = 0.0;
         for (Work work : criticalPath) {
             if (!work.getName().equals("START_OPTIMIZATION") && !work.getName().equals("END_OPTIMIZATION")) {
                 double time = timePlan.get(work);
                 allTime += time;
             }
         }
-        str += "\n New Time = " + allTime;
+        return allTime;
+    }
+
+    public String toString() {
+        String str = "\n TIME ";
+        for (HashMap.Entry pair : this.getTimePlan().entrySet()) {
+            Work work = (Work) pair.getKey();
+            String name = work.getName();
+            double time = (double) pair.getValue();
+            str += name + " = " + time + ", ";
+        }
+        str += "\n New Time = " + getAllTime();
         str += "\n CASH ";
-        double allCash  = 0.0;
         for (HashMap.Entry pair : this.getCashPlan().entrySet()) {
             Work work = (Work) pair.getKey();
             String name = work.getName();
             double cash = (double) pair.getValue();
             str += name + " = " + cash + ", ";
         }
-        for (Work work : cashPlan.keySet()) {
-            double cash = cashPlan.get(work);
-            allCash += cash;
-        }
-        str += "\n Cash = " + allCash;
+        str += "\n Cash = " + getAllCash();
         return str;
     }
 

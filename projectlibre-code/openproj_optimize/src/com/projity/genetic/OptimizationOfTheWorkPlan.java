@@ -23,7 +23,7 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     @Override
     public List<OvertimePlanHromosome> generateHromosomes(Project project) {
         List<OvertimePlanHromosome> list = new ArrayList<>();
-list.clear();
+        list.clear();
 		for (int i = 0; i < N; i++) {
             OvertimePlanHromosome h = new OvertimePlanHromosome(project);
             h.generateHromosome(function, random);
@@ -35,13 +35,22 @@ list.clear();
     @Override
     public List<OvertimePlanHromosome> chooseParents(List<OvertimePlanHromosome> listOfParents) {
         List<OvertimePlanHromosome> listOfChildren = new ArrayList<>();
-
-        int size = listOfParents.size();
-        OvertimePlanHromosome parent1 = listOfParents.get(random.nextInt(size));
-        OvertimePlanHromosome parent2 = listOfParents.get(random.nextInt(size));
-        listOfChildren.add(parent1);
-        listOfChildren.add(parent2);
-        return listOfChildren;
+           
+        OvertimePlanHromosome bestParent = null;
+        bestParent = listOfParents.get(0);
+        for (OvertimePlanHromosome child : listOfParents) {
+          bestParent = HromosomeUtils.getBest(bestParent, child);
+        }
+        OvertimePlanHromosome parent1 = bestParent;
+        listOfParents.remove(parent1);
+        bestParent = listOfParents.get(0);
+        for (OvertimePlanHromosome child : listOfParents) {
+            bestParent = HromosomeUtils.getBest(bestParent, child);
+          }
+       OvertimePlanHromosome parent2 = bestParent;
+       listOfChildren.add(parent1);
+       listOfChildren.add(parent2);
+       return listOfChildren;
     }
 
     @Override
@@ -55,23 +64,20 @@ list.clear();
     @Override
     public List<OvertimePlanHromosome> selection(List<OvertimePlanHromosome> listOfParents, List<OvertimePlanHromosome> listOfChildren) {
         HromosomeUtils.getInstance();
-        OvertimePlanHromosome worstParent = null;
-        worstParent = listOfParents.get(0);
+        OvertimePlanHromosome worst = null;
+
+        listOfParents.addAll(listOfChildren);
+        worst = listOfParents.get(0);
         for (OvertimePlanHromosome parent : listOfParents) {
-            worstParent = HromosomeUtils.getWorst(worstParent, parent);
+        	worst = HromosomeUtils.getWorst(worst, parent);
         }
-
-        OvertimePlanHromosome bestChild = null;
-        bestChild = listOfChildren.get(0);
-        for (OvertimePlanHromosome child : listOfChildren) {
-            bestChild = HromosomeUtils.getBest(bestChild, child);
-        }
-
-        listOfParents.remove(worstParent);
-        listOfParents.add(bestChild);
+        System.out.println("WORST " + worst.toString());
+        System.out.println();
+        listOfParents.remove(worst);
 
         return listOfParents;
     }
+    
     @Override
     public OvertimePlanHromosome result(List<OvertimePlanHromosome> list) {
         HromosomeUtils.getInstance();
@@ -94,4 +100,33 @@ list.clear();
         }
         return bestChild;
     }
+
+	@Override
+	public List<OvertimePlanHromosome> crossingover(OvertimePlanHromosome first, OvertimePlanHromosome second) {
+		System.out.println("CROSSINGOVER");
+		List<OvertimePlanHromosome> result = new ArrayList<>();
+		Project project = first.getProject();
+		OvertimePlanHromosome child = new OvertimePlanHromosome(project); 
+		
+		for (Work work : project.getListOfWorks()) {
+			double firstWorkCash = first.getCashOfWork(work);
+			double secondWorkCash = second.getCashOfWork(work);
+			double newWorkCash = (firstWorkCash + secondWorkCash) / 2;
+
+			
+			child.editCashPlan(work, newWorkCash);
+			child.updateTimeOfWork(work, newWorkCash, function);
+
+		}
+		child.setCriticalPath();
+		if (child.getAllTime() > project.getNewTime()) {
+			System.out.println("More than new time");
+			return result;
+		}
+		System.out.println("newWorkTime " + child.getAllTime());
+		System.out.println("newWorkCash " + child.getAllCash());
+		
+		result.add(child);
+		return result;
+	}
 }

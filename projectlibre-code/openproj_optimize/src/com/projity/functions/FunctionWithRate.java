@@ -13,11 +13,7 @@ public class FunctionWithRate implements IFunction {
     }
 
     @Override
-    public double solveMaxCash(double minTime, double rate, double currentTime) {
-    	System.out.println("currentTime " + currentTime + " rate " + rate + " minTime " + minTime + " maxSolve " + (currentTime - minTime) * rate);
-        if (minTime == 0) {
-        	minTime = currentTime / 2;
-        } 	return ((currentTime * 8 / minTime) - 8) * rate;
-    	//return (currentTime - minTime) * rate;
+    public double solveMaxCash(double rate, double currentTime) {
+    	return (currentTime / 2) * rate;
     }
 }

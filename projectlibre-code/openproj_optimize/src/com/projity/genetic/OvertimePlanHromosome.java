@@ -22,8 +22,7 @@ public class OvertimePlanHromosome {
     }
 
     public OvertimePlanHromosome generateHromosome(FunctionWithRate function, Random rnd) {
-    	double allTime = project.getNewTime();
-    	double allCash = project.getMaxCash();
+
         for (Work work : project.getListOfWorks()) {
             Executor executor = project.getExecutorOfWork(work);
             ExecutorConditions executorConditions = executor.getExecutorConditions();
@@ -59,7 +58,7 @@ public class OvertimePlanHromosome {
         }
         
         setCriticalPath();
-        System.out.println("GENERATE cashPlan" + this.getAllCash() + "  timePlan "+ this.getAllTime());
+//        System.out.println("GENERATE cashPlan" + this.getAllCash() + "  timePlan "+ this.getAllTime());
         if (this.getAllTime() > this.getProject().getNewTime() || this.getAllCash() > this.getProject().getMaxCash()) {
         	
         	System.setErr(null);

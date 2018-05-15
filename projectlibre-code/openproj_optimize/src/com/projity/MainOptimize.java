@@ -25,8 +25,6 @@ public class MainOptimize {
     }
 
     public static void execute(String[] args) {
-//        int step = 30;
-//        int countOfHromosome = 100;
         
         Double newTime = Double.valueOf(args[0]);
         Double maxCash = Double.valueOf(args[1]);
@@ -48,35 +46,45 @@ public class MainOptimize {
             System.out.println("Project is empty!");
             return;
         }
-
+        
+       
         FunctionWithRate function = new FunctionWithRate();
 
         OptimizationOfTheWorkPlan optim = new OptimizationOfTheWorkPlan(countOfHromosome, function);
        
         population = optim.generateHromosomes(project);
-//        System.out.println("POPULATION " + population.toString());
-//        System.out.println();
+        System.out.println("POPULATION " + population.toString());
+        System.out.println();
+        
         for (int i = 0; i < step; i++) {
             
         	parents = optim.chooseParents(population);
-//        	System.out.println("PARENTS " + parents.toString());
-//        	System.out.println();
+        	System.out.println("PARENTS " + parents.toString());
+        	System.out.println();
 
         	children = optim.crossingover(parents.get(0), parents.get(1));
         	if (children.isEmpty()) {
-        		i--;
-        		continue;
+        		
+        		OvertimePlanHromosome mutation = optim.mutation(population.get(0));
+        		population.add(mutation);
         	}
-//        	System.out.println("CHILDREN " + children.toString());
-//        	System.out.println();
+        	System.out.println("CHILDREN " + children.toString());
+        	System.out.println();
 
-        	
+        	 System.out.println("before cross POPULATION!!! " + population.toString());
         
             population = (optim.selection(population, children));
-//            System.out.println("POPULATION!!! " + population.toString());
-//            System.out.println();
+            System.out.println("POPULATION!!! " + population.toString());
+            System.out.println("i = "+i+"   population.size() "+population.size());
+            if (population.size() == 1) {
+            	System.out.println("End " );
+            	break;
+            }
         }
+        System.out.println("Before result");
         OvertimePlanHromosome result = optim.result(population);
+        
+        
         System.out.println("RESULT " + result.toString());
         try {
             XMLUtils.updateXML(result, input);
@@ -84,4 +92,5 @@ public class MainOptimize {
             e.printStackTrace();
         }
     }
+
 }

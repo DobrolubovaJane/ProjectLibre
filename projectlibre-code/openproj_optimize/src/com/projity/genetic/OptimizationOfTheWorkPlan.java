@@ -34,17 +34,19 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
 
     @Override
     public List<OvertimePlanHromosome> chooseParents(List<OvertimePlanHromosome> listOfParents) {
+    	List<OvertimePlanHromosome> copyListOfParents = new ArrayList<>();
+    	copyListOfParents.addAll(listOfParents);
         List<OvertimePlanHromosome> listOfChildren = new ArrayList<>();
            
         OvertimePlanHromosome bestParent = null;
-        bestParent = listOfParents.get(0);
-        for (OvertimePlanHromosome child : listOfParents) {
+        bestParent = copyListOfParents.get(0);
+        for (OvertimePlanHromosome child : copyListOfParents) {
           bestParent = HromosomeUtils.getBest(bestParent, child);
         }
         OvertimePlanHromosome parent1 = bestParent;
-        listOfParents.remove(parent1);
-        bestParent = listOfParents.get(0);
-        for (OvertimePlanHromosome child : listOfParents) {
+        copyListOfParents.remove(parent1);
+        bestParent = copyListOfParents.get(0);
+        for (OvertimePlanHromosome child : copyListOfParents) {
             bestParent = HromosomeUtils.getBest(bestParent, child);
           }
        OvertimePlanHromosome parent2 = bestParent;
@@ -66,6 +68,7 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
         HromosomeUtils.getInstance();
         OvertimePlanHromosome worst = null;
 
+      
         listOfParents.addAll(listOfChildren);
         worst = listOfParents.get(0);
         for (OvertimePlanHromosome parent : listOfParents) {
@@ -80,9 +83,11 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     
     @Override
     public OvertimePlanHromosome result(List<OvertimePlanHromosome> list) {
+    	System.out.println("result" );
         HromosomeUtils.getInstance();
         OvertimePlanHromosome bestChild = null;
         bestChild = list.get(0);
+        System.out.println("bestChild" + bestChild);
         for (OvertimePlanHromosome child : list) {
             bestChild = HromosomeUtils.getBest(bestChild, child);
         }

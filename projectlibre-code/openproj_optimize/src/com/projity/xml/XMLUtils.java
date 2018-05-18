@@ -2,7 +2,7 @@ package com.projity.xml;
 
 import com.projity.exchange.FileImporter;
 import com.projity.exchange.LocalFileImporter;
-import com.projity.genetic.OvertimePlanHromosome;
+import com.projity.genetic.OvertimePlanChromosome;
 import com.projity.objects.Executor;
 import com.projity.objects.ExecutorConditions;
 import com.projity.objects.Project;
@@ -174,7 +174,7 @@ public class XMLUtils {
         return projectObj;
     }
     
-     public static void getXMLresult(OvertimePlanHromosome plan) throws ParserConfigurationException, TransformerException {
+     public static void getXMLresult(OvertimePlanChromosome plan) throws ParserConfigurationException, TransformerException {
          HashMap<Work, Double> cashPlan = plan.getCashPlan();
          Map timePlan  = plan.getTimePlan();
          Double allCash = 0.0;
@@ -219,7 +219,7 @@ public class XMLUtils {
          transformer.transform(new DOMSource(doc), new StreamResult(file));
      }
      
-     public static void updateXML(OvertimePlanHromosome plan, String filepath) throws TransformerException {
+     public static void updateXML(OvertimePlanChromosome plan, String filepath) throws TransformerException {
          try {
              DocumentBuilderFactory docFactory = DocumentBuilderFactory
                      .newInstance();

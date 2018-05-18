@@ -1,19 +1,19 @@
 package com.projity.genetic;
 
 
-public class HromosomeUtils {
-    private static HromosomeUtils instance;
+public class ChromosomeUtils {
+    private static ChromosomeUtils instance;
 
-    private HromosomeUtils() {}
+    private ChromosomeUtils() {}
 
-    public static HromosomeUtils getInstance() {
+    public static ChromosomeUtils getInstance() {
         if (instance == null) {
-            instance = new HromosomeUtils();
+            instance = new ChromosomeUtils();
         }
         return instance;
     }
 
-    public static OvertimePlanHromosome getBest(OvertimePlanHromosome first, OvertimePlanHromosome second) {
+    public static OvertimePlanChromosome getBest(OvertimePlanChromosome first, OvertimePlanChromosome second) {
         double newTime = first.getProject().getNewTime();
 
         double firstTime = first.getAllTime();
@@ -43,7 +43,7 @@ public class HromosomeUtils {
         }
 
     }
-    public static OvertimePlanHromosome getWorst(OvertimePlanHromosome first, OvertimePlanHromosome second) {
+    public static OvertimePlanChromosome getWorst(OvertimePlanChromosome first, OvertimePlanChromosome second) {
     	double newTime = first.getProject().getNewTime();
 
         double firstTime = first.getAllTime();

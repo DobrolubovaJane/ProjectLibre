@@ -5,11 +5,11 @@ import java.util.List;
 import com.projity.objects.Project;
 
 public abstract class AGeneticAlgorithm {
-    public abstract List<OvertimePlanHromosome> generateHromosomes(Project project);
-    public abstract List<OvertimePlanHromosome> chooseParents(List<OvertimePlanHromosome> listOfParents);
-    public abstract OvertimePlanHromosome mutation(OvertimePlanHromosome hromosome);
-    public abstract List<OvertimePlanHromosome> crossingover(OvertimePlanHromosome first, OvertimePlanHromosome second);
-    public abstract List<OvertimePlanHromosome> selection(List<OvertimePlanHromosome> listOfParents,
-                                                             List<OvertimePlanHromosome> listOfChildren);
-    public abstract OvertimePlanHromosome result(List<OvertimePlanHromosome> hromosomes);
+    public abstract List<OvertimePlanChromosome> generateChromosomes(Project project);
+    public abstract List<OvertimePlanChromosome> chooseParents(List<OvertimePlanChromosome> listOfParents);
+    public abstract OvertimePlanChromosome mutation(OvertimePlanChromosome hromosome);
+    public abstract List<OvertimePlanChromosome> crossingover(OvertimePlanChromosome first, OvertimePlanChromosome second);
+    public abstract List<OvertimePlanChromosome> selection(List<OvertimePlanChromosome> listOfParents,
+                                                             List<OvertimePlanChromosome> listOfChildren);
+    public abstract OvertimePlanChromosome result(List<OvertimePlanChromosome> hromosomes);
 }

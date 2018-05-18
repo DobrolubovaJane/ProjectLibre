@@ -11,24 +11,24 @@ import com.projity.objects.ExecutorConditions;
 import com.projity.objects.Project;
 import com.projity.objects.Work;
 
-public class OvertimePlanHromosome {
+public class OvertimePlanChromosome {
     private HashMap<Work, Double> cashPlan = new HashMap<>();
     private HashMap<Work, Double> timePlan = new HashMap<>();
     private Project project;
     private List<Work> criticalPath = new ArrayList<>();
 
-    public OvertimePlanHromosome(Project p) {
+    public OvertimePlanChromosome(Project p) {
         this.project = p;
     }
 
-    public OvertimePlanHromosome generateHromosome(FunctionWithRate function, Random rnd) {
+    public OvertimePlanChromosome generateChromosome(FunctionWithRate function, Random rnd) {
 
         for (Work work : project.getListOfWorks()) {
             Executor executor = project.getExecutorOfWork(work);
             ExecutorConditions executorConditions = executor.getExecutorConditions();
             double random = rnd.nextDouble();
             double cash = 0.0;
-            double time = 0.0;
+            Double time = 0.0;
             if (executorConditions == null) {
                 cash = random * executor.getRate() * 4;
                 time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
@@ -47,7 +47,6 @@ public class OvertimePlanHromosome {
                     }
                 }
             }
-            
 
             cashPlan.put(work, cash);
             timePlan.put(work, time);
@@ -138,8 +137,9 @@ public class OvertimePlanHromosome {
     	double allTime = 0.0;
         for (Work work : criticalPath) {
             if (!work.getName().equals("START_OPTIMIZATION") && !work.getName().equals("END_OPTIMIZATION")) {
-                double time = timePlan.get(work);
+                Double time = timePlan.get(work);
                 allTime += time;
+                
             }
         }
         return allTime;
@@ -153,7 +153,7 @@ public class OvertimePlanHromosome {
             double time = (double) pair.getValue();
             str += name + " = " + time + ", ";
         }
-        str += "\n New Time = " + getAllTime();
+       // str += "\n New Time = " + getAllTime();
         str += "\n CASH ";
         for (HashMap.Entry pair : this.getCashPlan().entrySet()) {
             Work work = (Work) pair.getKey();

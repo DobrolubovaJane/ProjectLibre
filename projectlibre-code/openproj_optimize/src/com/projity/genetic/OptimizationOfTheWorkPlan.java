@@ -21,81 +21,81 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     }
 
     @Override
-    public List<OvertimePlanHromosome> generateHromosomes(Project project) {
-        List<OvertimePlanHromosome> list = new ArrayList<>();
+    public List<OvertimePlanChromosome> generateChromosomes(Project project) {
+        List<OvertimePlanChromosome> list = new ArrayList<>();
         list.clear();
 		for (int i = 0; i < N; i++) {
-            OvertimePlanHromosome h = new OvertimePlanHromosome(project);
-            h.generateHromosome(function, random);
+            OvertimePlanChromosome h = new OvertimePlanChromosome(project);
+            h.generateChromosome(function, random);
             list.add(h);
         }
         return list;
     }
 
     @Override
-    public List<OvertimePlanHromosome> chooseParents(List<OvertimePlanHromosome> listOfParents) {
-    	List<OvertimePlanHromosome> copyListOfParents = new ArrayList<>();
+    public List<OvertimePlanChromosome> chooseParents(List<OvertimePlanChromosome> listOfParents) {
+    	List<OvertimePlanChromosome> copyListOfParents = new ArrayList<>();
     	copyListOfParents.addAll(listOfParents);
-        List<OvertimePlanHromosome> listOfChildren = new ArrayList<>();
+        List<OvertimePlanChromosome> listOfChildren = new ArrayList<>();
            
-        OvertimePlanHromosome bestParent = null;
+        OvertimePlanChromosome bestParent = null;
         bestParent = copyListOfParents.get(0);
-        for (OvertimePlanHromosome child : copyListOfParents) {
-          bestParent = HromosomeUtils.getBest(bestParent, child);
+        for (OvertimePlanChromosome child : copyListOfParents) {
+          bestParent = ChromosomeUtils.getBest(bestParent, child);
         }
-        OvertimePlanHromosome parent1 = bestParent;
+        OvertimePlanChromosome parent1 = bestParent;
         copyListOfParents.remove(parent1);
         bestParent = copyListOfParents.get(0);
-        for (OvertimePlanHromosome child : copyListOfParents) {
-            bestParent = HromosomeUtils.getBest(bestParent, child);
+        for (OvertimePlanChromosome child : copyListOfParents) {
+            bestParent = ChromosomeUtils.getBest(bestParent, child);
           }
-       OvertimePlanHromosome parent2 = bestParent;
+       OvertimePlanChromosome parent2 = bestParent;
        listOfChildren.add(parent1);
        listOfChildren.add(parent2);
        return listOfChildren;
     }
 
     @Override
-    public OvertimePlanHromosome mutation(OvertimePlanHromosome hromosome) {
+    public OvertimePlanChromosome mutation(OvertimePlanChromosome hromosome) {
 
-        OvertimePlanHromosome newH = new OvertimePlanHromosome(hromosome.getProject());
-        newH.generateHromosome(function, random);
+        OvertimePlanChromosome newH = new OvertimePlanChromosome(hromosome.getProject());
+        newH.generateChromosome(function, random);
         return newH;
     }
 
     @Override
-    public List<OvertimePlanHromosome> selection(List<OvertimePlanHromosome> listOfParents, List<OvertimePlanHromosome> listOfChildren) {
-        HromosomeUtils.getInstance();
-        OvertimePlanHromosome worst = null;
+    public List<OvertimePlanChromosome> selection(List<OvertimePlanChromosome> listOfParents, List<OvertimePlanChromosome> listOfChildren) {
+        ChromosomeUtils.getInstance();
+        OvertimePlanChromosome worst = null;
 
       
         listOfParents.addAll(listOfChildren);
         worst = listOfParents.get(0);
-        for (OvertimePlanHromosome parent : listOfParents) {
-        	worst = HromosomeUtils.getWorst(worst, parent);
+        for (OvertimePlanChromosome parent : listOfParents) {
+        	worst = ChromosomeUtils.getWorst(worst, parent);
         }
-        System.out.println("WORST " + worst.toString());
-        System.out.println();
+//        System.out.println("WORST " + worst.toString());
+//        System.out.println();
         listOfParents.remove(worst);
 
         return listOfParents;
     }
     
     @Override
-    public OvertimePlanHromosome result(List<OvertimePlanHromosome> list) {
-    	System.out.println("result" );
-        HromosomeUtils.getInstance();
-        OvertimePlanHromosome bestChild = null;
+    public OvertimePlanChromosome result(List<OvertimePlanChromosome> list) {
+//    	System.out.println("result" );
+        ChromosomeUtils.getInstance();
+        OvertimePlanChromosome bestChild = null;
         bestChild = list.get(0);
-        System.out.println("bestChild" + bestChild);
-        for (OvertimePlanHromosome child : list) {
-            bestChild = HromosomeUtils.getBest(bestChild, child);
+//        System.out.println("bestChild" + bestChild);
+        for (OvertimePlanChromosome child : list) {
+            bestChild = ChromosomeUtils.getBest(bestChild, child);
         }
         for (HashMap.Entry pair : bestChild.getTimePlan().entrySet()) {
             Project project = bestChild.getProject();
             Work work = (Work) pair.getKey();
             Executor executor = project.getExecutorOfWork(work);
-            System.out.println("work " + work);
+           // System.out.println("work " + work);
             double oldTime = executor.getTimeOfWork(work);
             double newTime = (double) pair.getValue();
             if (oldTime <= newTime) {
@@ -107,11 +107,11 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
     }
 
 	@Override
-	public List<OvertimePlanHromosome> crossingover(OvertimePlanHromosome first, OvertimePlanHromosome second) {
-		System.out.println("CROSSINGOVER");
-		List<OvertimePlanHromosome> result = new ArrayList<>();
+	public List<OvertimePlanChromosome> crossingover(OvertimePlanChromosome first, OvertimePlanChromosome second) {
+//		System.out.println("CROSSINGOVER");
+		List<OvertimePlanChromosome> result = new ArrayList<>();
 		Project project = first.getProject();
-		OvertimePlanHromosome child = new OvertimePlanHromosome(project); 
+		OvertimePlanChromosome child = new OvertimePlanChromosome(project); 
 		
 		for (Work work : project.getListOfWorks()) {
 			double firstWorkCash = first.getCashOfWork(work);
@@ -125,11 +125,11 @@ public class OptimizationOfTheWorkPlan extends AGeneticAlgorithm{
 		}
 		child.setCriticalPath();
 		if (child.getAllTime() > project.getNewTime()) {
-			System.out.println("More than new time");
+			//System.out.println("More than new time");
 			return result;
 		}
-		System.out.println("newWorkTime " + child.getAllTime());
-		System.out.println("newWorkCash " + child.getAllCash());
+//		System.out.println("newWorkTime " + child.getAllTime());
+//		System.out.println("newWorkCash " + child.getAllCash());
 		
 		result.add(child);
 		return result;

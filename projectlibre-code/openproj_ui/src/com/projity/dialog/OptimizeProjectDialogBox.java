@@ -15,6 +15,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 import com.projity.MainOptimize;
 import com.projity.datatype.Hyperlink;
+import com.projity.strings.Messages;
 
 public class OptimizeProjectDialogBox extends AbstractDialog {
 	private static final long serialVersionUID = 1L;
@@ -63,10 +64,10 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
     }	
     
     private Form form;
-    JLabel label = new JLabel("Enter new directive time in hours:");
-    JLabel label2 = new JLabel("Enter max cash for project:");
-    JLabel label3 = new JLabel("Enter count of steps:");
-    JLabel label4 = new JLabel("Enter count of hromosomes:");
+    JLabel label = new JLabel(Messages.getString("OptimizeProjectDialogBox.DirectiveTime"));
+    JLabel label2 = new JLabel(Messages.getString("OptimizeProjectDialogBox.MaxCash"));
+    JLabel label3 = new JLabel(Messages.getString("OptimizeProjectDialogBox.Steps"));
+    JLabel label4 = new JLabel(Messages.getString("OptimizeProjectDialogBox.Chromosomes"));
     JTextField directiveTime = new JTextField("", 3);
     JTextField maxCash = new JTextField("", 3);
     JTextField steps = new JTextField("", 3);

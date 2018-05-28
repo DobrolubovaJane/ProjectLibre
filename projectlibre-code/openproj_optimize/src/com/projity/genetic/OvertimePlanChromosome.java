@@ -33,18 +33,13 @@ public class OvertimePlanChromosome {
                 cash = random * executor.getRate() * 4;
                 time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
             } else {
-                Double condition = executorConditions.getConditionOfWork(work);
-                if (condition == null) {
-                    cash = random * executor.getRate() * 4;
-                    time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
+               //System.out.println("Condition " + executorConditions.isWorkConstant(work)+ " Work " + work.getName());
+                if (executorConditions.isWorkConstant(work)) {//true are passive vertices
+                    time = executor.getTimeOfWork(work);
                 } else {
-                    if (condition == 0) {
-                        time = executor.getTimeOfWork(work);
-                    } else if (condition > 0) {
-                        double maxCash = function.solveMaxCash(executor.getRate(), executor.getTimeOfWork(work));
-                    	cash = random * maxCash;
-                        time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
-                    }
+                    double maxCash = function.solveMaxCash(executor.getRate(), executor.getTimeOfWork(work));
+                	cash = random * maxCash;
+                    time = function.solve(cash, executor.getRate(), executor.getTimeOfWork(work));
                 }
             }
 

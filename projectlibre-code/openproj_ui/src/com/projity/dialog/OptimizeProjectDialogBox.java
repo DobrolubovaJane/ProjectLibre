@@ -124,8 +124,8 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
 
 	public JComponent createContentPanel() {
 
-		FormLayout layout = new FormLayout("300dlu:grow",
-				"p,3dlu,p,2dlu");
+		FormLayout layout = new FormLayout("150dlu,3dlu, 30dlu,75dlu,50dlu,30dlu ", //$NON-NLS-1$
+	    		  "p,1dlu,p,1dlu,p,10dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p,3dlu,p"); //$NON-NLS-1$
 
 		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
 		 
@@ -190,12 +190,18 @@ public class OptimizeProjectDialogBox extends AbstractDialog {
             }
 		});	
 		builder.add(panel);
-		builder.nextLine(1);
+//		builder.nextLine(2);
 		builder.add(panel2);
-		//builder.nextLine(1);
+		//builder.nextLine();
 		builder.add(panel3);
-		//builder.nextLine(3);
 		builder.add(panel4);
+//		builder.append(panel); //$NON-NLS-1$
+//		builder.nextColumn(2);
+//		builder.append(directiveTime);
+//		builder.nextLine(2);
+//		builder.append(panel2); //$NON-NLS-1$
+//		builder.nextColumn(2);
+//		builder.append(maxCash);
 		return builder.getPanel();
 	}
 	

@@ -30,6 +30,7 @@ public class XMLUtils {
     static Map<String, Executor> executorsId = new HashMap<>();
     static Map<String, ExecutorConditions> executorConditionsId = new HashMap<>();
     static HashMap<Work, Executor> workAndExecutor = new HashMap<>();
+    static Map<Work, Double> timeOfWork = new HashMap<>();
     private static Work startOptimization;
     
 
@@ -47,6 +48,7 @@ public class XMLUtils {
         initExecutors();
         workAndExecutor.clear();
         initAssigment();
+        initConditions();
         return initProject(newTime, maxCash);
     }
 
@@ -81,7 +83,6 @@ public class XMLUtils {
         for (int i = 0; i < works.getLength(); i++) {
 
             Node work = works.item(i);
-            NodeList attributes = work.getChildNodes();
             if (work.getNodeType() == Node.ELEMENT_NODE) {
 
                 Element eWork = (Element) work;
@@ -149,19 +150,59 @@ public class XMLUtils {
                 }
 
                 Work work = worksId.get(work_id);
+                timeOfWork.put(work, time);
                 String ExecutorId = eAss.getElementsByTagName("ResourceUID").item(0).getTextContent();
 
                 Executor executorObj = executorsId.get(ExecutorId);
                 executorObj.setWork(work, time);
                 workAndExecutor.put(work, executorObj);
-                
-                HashMap<Work, Double> conditionMap = new HashMap<>();
-                conditionMap.put(work, Double.valueOf("3"));
-                executorObj.setExecutorConditions(new ExecutorConditions(conditionMap));
-
-
-
             }
+        }
+    }
+    
+    private static void initConditions() {
+    	 NodeList works = document.getElementsByTagName("Task");
+
+        for (int i = 0; i < works.getLength(); i++) {
+
+            Node work = works.item(i);
+
+            if (work.getNodeType() == Node.ELEMENT_NODE) {
+
+                Element eWork = (Element) work;
+
+                String work_id = eWork.getElementsByTagName("UID").item(0).getTextContent();
+                Work workObj = worksId.get(work_id);
+                Boolean value = (eWork.getElementsByTagName("EffortDriven").item(0).getTextContent().equals("1"))?true:false;
+                System.out.println(workObj.getName() + "_________ " + value + "______" + eWork.getElementsByTagName("EffortDriven").item(0).getTextContent());
+                
+                Executor executor = workAndExecutor.get(workObj);
+            	String executor_id="";
+            	
+                Set<Map.Entry<String,Executor>> entrySet = executorsId.entrySet();
+
+                for (Map.Entry<String,Executor> pair : entrySet) {
+                    if (executor.equals(pair.getValue())) {
+                        executor_id = pair.getKey();
+                    }
+                }
+                
+
+                ExecutorConditions executorConditions;
+                if (!executorConditionsId.containsKey(executor_id)) {
+                    executorConditions = new ExecutorConditions();
+                    executorConditionsId.put(executor_id, executorConditions);
+                } else {
+                    executorConditions = executorConditionsId.get(executor_id);
+                }
+                executorConditions.workIsConstantOrNot(workObj, value);
+            }
+
+        }
+        for (Map.Entry<String, ExecutorConditions> entry : executorConditionsId.entrySet()) {
+
+            Executor executorObj = executorsId.get(entry.getKey());
+            executorObj.setExecutorConditions(entry.getValue());
         }
     }
 
@@ -235,49 +276,45 @@ public class XMLUtils {
              for (int i = 0; i < works.getLength(); i++) {
 
                  Node work = works.item(i);
-                 NodeList attributes = work.getChildNodes();
                  if (work.getNodeType() == Node.ELEMENT_NODE) {
 
                      Element eWork = (Element) work;
                      String work_id = eWork.getElementsByTagName("UID").item(0).getTextContent();
                      Work workObj = worksId.get(work_id);
-                     String newWorkTime =  TimeUtils.getTimeForXML(plan.getTimePlan().get(workObj));
-                     Node durationNode = eWork.getElementsByTagName("Duration").item(0);
-                     durationNode.setTextContent(newWorkTime);
-
-                     
-                 }
+                     String newWorkTime =  TimeUtils.getTimeForXML(timeOfWork.get(workObj) - plan.getTimePlan().get(workObj));
+                     Node remainingDuration = eWork.getElementsByTagName("RemainingDuration").item(0);
+                     if (!workObj.getName().equals("START_OPTIMIZATION") && !workObj.getName().equals("END_OPTIMIZATION")) {
+                    	 remainingDuration.setTextContent(newWorkTime);
+                     }
+             	}
              }
+             
+             
+             NodeList assignments = document.getElementsByTagName("Assignment");
+             
+             for (int i = 0; i < assignments.getLength(); i++) {
+                 Node assignment = assignments.item(i);
+                 if (assignment.getNodeType() == Node.ELEMENT_NODE) {
+                	 
+                     Element eAss = (Element) assignment;
+                     String work_id = eAss.getElementsByTagName("TaskUID").item(0).getTextContent();
+                     Work workObj = worksId.get(work_id);
+                     String newWorkTime =  TimeUtils.getTimeForXML(timeOfWork.get(workObj) - plan.getTimePlan().get(workObj));
+                     Node remainingDuration = eAss.getElementsByTagName("RemainingWork").item(0);
+                     if (!workObj.getName().equals("START_OPTIMIZATION") && !workObj.getName().equals("END_OPTIMIZATION")) {
+                    	 remainingDuration.setTextContent(newWorkTime);
+                     }
+             	}
+             }
+             
              TransformerFactory transformerFactory = TransformerFactory
                      .newInstance();
              Transformer transformer = transformerFactory.newTransformer();
              DOMSource source = new DOMSource(doc);
              StreamResult result = new StreamResult(new File(filepath));
              transformer.transform(source, result);
-             
-             /*
-             
+             System.out.println("Transform ");
 
-             Node startdate = doc.getElementsByTagName("startdate").item(0);
-
-             // I am not doing any thing with it just for showing you
-             String currentStartdate = startdate.getNodeValue();
-
-             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-             Date today = Calendar.getInstance().getTime();
-
-             startdate.setTextContent(df.format(today));
-
-             // write the content into xml file
-             TransformerFactory transformerFactory = TransformerFactory
-                     .newInstance();
-             Transformer transformer = transformerFactory.newTransformer();
-             DOMSource source = new DOMSource(doc);
-             StreamResult result = new StreamResult(new File(filepath));
-             transformer.transform(source, result);
-
-             System.out.println("Done");
-*/
          } catch (ParserConfigurationException e) {
              // TODO Auto-generated catch block
              e.printStackTrace();
